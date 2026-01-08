@@ -1,0 +1,68 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {"h": 8, "w": 8, "x": 0, "y": 0},
+      "id": 1,
+      "options": {},
+      "targets": [
+        {
+          "expr": "(1 - (sum(rate(flask_exceptions_total[5m])) or vector(0)) / (sum(rate(flask_http_requests_total[5m])) or vector(1))) * 100",
+          "legendFormat": "availability_pct",
+          "refId": "A"
+        }
+      ],
+      "title": "Availability (%)",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {"defaults": {}, "overrides": []},
+      "gridPos": {"h": 8, "w": 8, "x": 8, "y": 0},
+      "id": 2,
+      "options": {},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(flask_request_latency_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p95_seconds",
+          "refId": "A"
+        }
+      ],
+      "title": "Latency P95 (s)",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {"defaults": {}, "overrides": []},
+      "gridPos": {"h": 8, "w": 16, "x": 0, "y": 8},
+      "id": 3,
+      "options": {},
+      "targets": [
+        {
+          "expr": "rate(flask_http_requests_total[5m])",
+          "legendFormat": "requests_per_second",
+          "refId": "A"
+        }
+      ],
+      "title": "RPS (per second)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 30,
+  "title": "SLO Overview",
+  "uid": "slo-overview",
+  "version": 1
+}
